@@ -62,7 +62,7 @@ class AllyController < ApplicationController
         :clientId => plugin_data[:client_id],
         :baseUrl => plugin_data[:base_url],
         :path => request.path,
-        :header => request.to_hash["authorization"][0],
+        :header => request.to_hash['authorization'][0],
         :body => request.body,
       }
       render :json => data
