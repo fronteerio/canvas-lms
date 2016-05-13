@@ -1,4 +1,21 @@
-require 'date'
+#
+# Copyright (C) 2011 Instructure, Inc.
+#
+# This file is part of Canvas.
+#
+# Canvas is free software: you can redistribute it and/or modify it under
+# the terms of the GNU Affero General Public License as published by the Free
+# Software Foundation, version 3 of the License.
+#
+# Canvas is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+# A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+# details.
+#
+# You should have received a copy of the GNU Affero General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+
 require 'oauth'
 
 module Ally
@@ -7,10 +24,10 @@ module Ally
 
     ##
     # Creates a new Ally client
-    def initialize(client_id, secret, base_url=nil)
+    def initialize(client_id, secret, base_url="prod.ally.ac")
       @client_id = client_id
       @secret = secret
-      @base_url = base_url || "prod.ally.ac"
+      @base_url = base_url
     end
 
     ##
@@ -24,19 +41,21 @@ module Ally
     #  - parameters:    Any parameters that will be sent to the Ally REST API
     def sign(course_id, user_id, role, method, path, parameters)
       consumer = OAuth::Consumer.new(@client_id, @secret, {
-        :site   => @base_url,
-        :scheme => :header
+        site: @base_url,
+        scheme: :header
       })
 
       # Add the Ally authentication specific parameters
-      parameters["userId"] = user_id
-      parameters["courseId"] = course_id
-      parameters["role"] = role
+      parameters[:userId] = user_id
+      parameters[:courseId] = course_id
+      parameters[:role] = role
 
-      if method == "GET"
-        return consumer.create_signed_request(:get, path + "?" + parameters.to_query)
-      elsif method == "POST"
+      if method == 'GET'
+        return consumer.create_signed_request(:get, "#{path}?#{parameters.to_query}")
+      elsif method == 'POST'
         return consumer.create_signed_request(:post, path, nil, {}, parameters)
+      else
+        raise ArgumentError, 'method needs to be GET or POST'
       end
     end
   end
