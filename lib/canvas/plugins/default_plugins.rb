@@ -223,9 +223,9 @@ Canvas::Plugin.register 'common_cartridge_importer', :export_system, {
     :worker => 'CCWorker',
     :migration_partial => 'cc_config',
     :requires_file_upload => true,
-    :provides =>{:common_cartridge=>CC::Importer::Standard::Converter,
-                 :common_cartridge_1_0=>CC::Importer::Standard::Converter,
-                 :common_cartridge_1_1=>CC::Importer::Standard::Converter,
+    :provides =>{:common_cartridge=>CC::Importer::Standard::Converter, 
+                 :common_cartridge_1_0=>CC::Importer::Standard::Converter, 
+                 :common_cartridge_1_1=>CC::Importer::Standard::Converter, 
                  :common_cartridge_1_2=>CC::Importer::Standard::Converter,
                  :common_cartridge_1_3=>CC::Importer::Standard::Converter},
     :valid_contexts => %w{Account Course}
@@ -367,24 +367,3 @@ Canvas::Plugin.register('live_events', nil, {
   :settings_partial => 'plugins/live_events_settings',
   :validator => 'LiveEventsValidator'
 })
-Canvas::Plugin.register('ally', nil, {
-  name: 'Ally',
-  description: -> { t :description, "Accessible Learning Content" },
-  website: 'http://ally.ac',
-  author: 'Ally',
-  author_website: 'http://ally.ac',
-  version: '1.0.0',
-  settings_partial: 'plugins/ally_settings',
-  validator: 'AllyValidator',
-  encrypted_settings: [:secret]
-})
-Canvas::Plugin.register('facebook', nil,
-  name: 'Facebook',
-  description: -> { t :description, 'Facebook Login' },
-  website: 'http://www.facebook.com',
-  author: 'Instructure',
-  author_website: 'http://www.instructure.com',
-  version: '2.0.0',
-  settings_partial: 'plugins/facebook_settings',
-  encrypted_settings: [:app_secret]
-)

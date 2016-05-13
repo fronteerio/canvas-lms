@@ -524,6 +524,7 @@ class AccountsController < ApplicationController
         end
 
         params[:account][:turnitin_host] = validated_turnitin_host(params[:account][:turnitin_host])
+        params[:account][:ally_base_url] = validated_ally_base_url(params[:account][:ally_base_url])
         enable_user_notes = params[:account].delete :enable_user_notes
         allow_sis_import = params[:account].delete :allow_sis_import
         params[:account].delete :default_user_storage_quota_mb unless @account.root_account? && !@account.site_admin?
@@ -959,6 +960,15 @@ class AccountsController < ApplicationController
     if input_host.present?
       _, turnitin_uri = CanvasHttp.validate_url(input_host)
       turnitin_uri.host
+    else
+      nil
+    end
+  end
+
+  def validated_ally_base_url(input)
+    if input.present?
+      _, ally_uri = CanvasHttp.validate_url(input)
+      ally_uri.to_s
     else
       nil
     end
