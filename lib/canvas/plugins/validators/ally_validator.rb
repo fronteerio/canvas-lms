@@ -27,7 +27,6 @@ module Canvas::Plugins::Validators::AllyValidator
         false
       else
         settings.slice!(*expected_settings)
-        settings[:recording_enabled] = Canvas::Plugin.value_to_boolean(settings[:recording_enabled])
         settings
       end
     end
