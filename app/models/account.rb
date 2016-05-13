@@ -21,7 +21,8 @@ require 'atom'
 class Account < ActiveRecord::Base
   include Context
   attr_accessible :name, :turnitin_account_id, :turnitin_shared_secret,
-    :turnitin_host, :turnitin_comments, :turnitin_pledge,
+    :turnitin_host, :turnitin_comments, :turnitin_pledge, :ally_client_id,
+    :ally_secret, :ally_base_url,
     :default_time_zone, :parent_account, :settings, :default_storage_quota,
     :default_storage_quota_mb, :storage_quota, :ip_filters, :default_locale,
     :default_user_storage_quota_mb, :default_group_storage_quota_mb, :integration_id, :brand_config_md5
@@ -663,6 +664,16 @@ class Account < ActiveRecord::Base
     Canvas::Security.decrypt_password(self.turnitin_crypted_secret, self.turnitin_salt, 'instructure_turnitin_secret_shared')
   end
 
+  def ally_secret=(secret)
+    return if secret.blank?
+    self.ally_crypted_secret, self.ally_salt = Canvas::Security.encrypt_password(secret, 'instructure_ally_secret_shared')
+  end
+
+  def ally_secret
+    return nil unless self.ally_salt && self.ally_crypted_secret
+    Canvas::Security.decrypt_password(self.ally_crypted_secret, self.ally_salt, 'instructure_ally_secret_shared')
+  end
+
   def self.account_chain(starting_account_id)
     chain = []
 
@@ -1242,6 +1253,15 @@ class Account < ActiveRecord::Base
       self.turnitin_comments
     else
       self.parent_account.try(:closest_turnitin_comments)
+    end
+  end
+
+  def ally_settings
+    return @ally_settings if defined?(@ally_settings)
+    if self.ally_client_id.present? && self.ally_secret.present?
+      @ally_settings = [self.ally_client_id, self.ally_secret, self.ally_base_url]
+    else
+      @ally_settings = self.parent_account.try(:ally_settings)
     end
   end
 

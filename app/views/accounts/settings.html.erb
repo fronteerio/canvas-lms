@@ -382,6 +382,10 @@ TEXT
                 </div>
               <% end %>
               <div>
+                <input type="checkbox" name="ally" id="ally" <%= 'checked' unless @account.ally_client_id.blank? %> />
+                <label for="ally"><%= t 'labels.ally', 'Ally' %></label>
+              </div>
+              <div>
                 <%= settings.check_box :users_can_edit_name, :checked => @account.settings[:users_can_edit_name] != false %>
                 <%= settings.label :users_can_edit_name, :en => "Users can edit their name" %>
               </div>
@@ -543,6 +547,24 @@ TEXT
             <a href="#" class="add-small add_custom_help_link" style="font-size: 0.9em;"><%= t(:add_a_custom_help_link, "Add a custom help link") %></a>
           </fieldset>
         <% end %>
+
+        <fieldset id="ally_settings" style="display: none;">
+          <legend><%= t(:ally_settings_title, "Ally Settings") %></legend>
+          <table class="formtable">
+            <tr>
+              <td><%= f.blabel :ally_client_id, :en => "Ally Client ID" %></td>
+              <td><%= f.text_field :ally_client_id, :class => "ally_account_settings" %></td>
+            </tr>
+            <tr>
+              <td><%= f.blabel :ally_secret, :en => "Ally Shared Secret" %></td>
+              <td><%= f.text_field :ally_secret, :class => "ally_account_settings" %></td>
+            </tr>
+            <tr>
+              <td><%= f.blabel :ally_base_url, :en => "Ally Base URL" %></td>
+              <td><%= f.text_field :ally_base_url, :class => "ally_account_settings", :placeholder => "http://prod.ally.ac" %></td>
+            </tr>
+          </table>
+        </fieldset>
 
         <% unless @account.site_admin? %>
           <fieldset id="enable_equella_settings" style="display: none;">

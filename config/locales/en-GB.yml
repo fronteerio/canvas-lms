@@ -11219,12 +11219,6 @@ en-GB:
     account_reports: 
       description: "Select account reports"
       name: "Account reports"
-    ally_settings:
-      description: "This plugin gives instructors feedback on how to make their course content more accessible and allows students to download automatically remediated files."
-      labels:
-        client_id: "Client ID"
-        secret: "API Secret"
-        base_url: "Base URL"
     app_center: 
       description: "App Centre for tracking/installing external tools in Canvas"
       name: "App Centre"
