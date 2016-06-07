@@ -24,7 +24,7 @@ module Ally
 
     ##
     # Creates a new Ally client
-    def initialize(client_id, secret, base_url="prod.ally.ac")
+    def initialize(client_id, secret, base_url)
       @client_id = client_id
       @secret = secret
       @base_url = base_url
@@ -46,9 +46,9 @@ module Ally
       })
 
       # Add the Ally authentication specific parameters
-      parameters[:userId] = user_id
-      parameters[:courseId] = course_id
-      parameters[:role] = role
+      parameters["userId"] = user_id
+      parameters["courseId"] = course_id
+      parameters["role"] = role
 
       if method == 'GET'
         return consumer.create_signed_request(:get, "#{path}?#{parameters.to_query}")

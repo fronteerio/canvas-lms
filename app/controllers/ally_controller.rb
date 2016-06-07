@@ -17,7 +17,7 @@
 #
 
 # @API Ally
-# API for access Ally data
+# API for accessing Ally data
 class AllyController < ApplicationController
 
   # @API Get Ally information
@@ -58,7 +58,7 @@ class AllyController < ApplicationController
   def sign
     get_context
     request = get_signed_request_object()
-    if (request)
+    if request
       ally_settings = get_ally_settings()
       data = {
         :clientId => ally_settings[:client_id],
@@ -71,7 +71,7 @@ class AllyController < ApplicationController
     end
   end
 
-  ##API Proxy a request to the Ally API
+  # @API Proxy a request to the Ally API
   # Proxy data from the Ally REST API
   #
   # @example_request
@@ -106,7 +106,7 @@ class AllyController < ApplicationController
   def get_signed_request_object
     # Respond with a 400 if the Ally integration hasn't been enabled
     ally_settings = get_ally_settings
-    if !ally_settings[:enabled]
+    if ally_settings[:enabled] != true
       render :text => "Ally has not been enabled yet", :status => :bad_request
       return false
     end
