@@ -772,18 +772,37 @@ module ApplicationHelper
         includes = ["/optimized/vendor/jquery-1.7.2.js"] + includes
         javascript_include_tag(*includes)
       else
-        str = <<-ENDSCRIPT
-          require(['jquery'], function () {
-            #{includes.to_json}.forEach(function (src) {
-              var s = document.createElement('script');
-              s.src = src;
-              document.body.appendChild(s);
-            });
-          });
-        ENDSCRIPT
-        javascript_tag(str)
+        include_js_with_jquery(includes.to_json)
       end
     end
+  end
+
+  def include_ally_js
+    ally_settings = Context.get_account(@context).ally_settings
+    if ally_settings.present?
+      ally_js_url = ally_settings[2] + "/integration/canvas/ally.js"
+      str = <<-ENDSCRIPT
+      ALLY_CFG = {
+        'baseUrl': '#{ally_settings[2]}',
+        'clientId': '#{ally_settings[0]}',
+        'enabled': true
+      }
+      ENDSCRIPT
+      javascript_tag(str) + include_js_with_jquery([ally_js_url])
+    end
+  end
+
+  def include_js_with_jquery(includes)
+    str = <<-ENDSCRIPT
+      require(['jquery'], function () {
+        #{includes}.forEach(function (src) {
+          var s = document.createElement('script');
+          s.src = src;
+          document.body.appendChild(s);
+        });
+      });
+    ENDSCRIPT
+    javascript_tag(str)
   end
 
   # allows forcing account CSS off universally for a specific situation,

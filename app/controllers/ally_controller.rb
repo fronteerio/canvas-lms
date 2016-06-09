@@ -20,29 +20,6 @@
 # API for accessing Ally data
 class AllyController < ApplicationController
 
-  # @API Get Ally information
-  # Returns the Ally integration information
-  #
-  # @example_request
-  #
-  #   curl 'https://<canvas>/api/v1/ally' \
-  #         -H 'Authorization: Bearer <token>'
-  #
-  # @example_response
-  #
-  #  { "enabled": true, "clientId": 47831, "baseUrl": "https://prod.ally.ac" }
-  #
-  def enabled
-    get_context
-    ally_settings = get_ally_settings
-    data = {
-      :enabled => ally_settings[:enabled],
-      :clientId => ally_settings[:client_id],
-      :baseUrl => ally_settings[:base_url]
-    }
-    render :json => data
-  end
-
   # @API Create a signed request to the Ally API
   # Get the OAuth signature so a request to the Ally API can be made
   #
