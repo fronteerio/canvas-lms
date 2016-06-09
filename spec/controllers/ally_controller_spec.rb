@@ -59,30 +59,6 @@ describe AllyController do
     request.headers['accept'] = 'application/json'
   end
 
-  describe 'GET enabled' do
-    it 'should output the ally information' do
-      course_ally_disabled
-      get :enabled, course_id: @course.id
-      expect(response).to have_http_status(:ok)
-      data = JSON.parse(response.body)
-      expect(data.keys.length).to be 3
-      expect(data['enabled']).to be false
-      expect(data['clientId']).to be_nil
-      expect(data['baseUrl']).to be_nil
-    end
-
-    it 'should output the ally information when enabled' do
-      course_with_student_ally_enabled
-      get :enabled, course_id: @course.id
-      expect(response).to have_http_status(:ok)
-      data = JSON.parse(response.body)
-      expect(data.keys.length).to be 3
-      expect(data['enabled']).to be true
-      expect(data['clientId']).to eq(@course.account.ally_client_id)
-      expect(data['baseUrl']).to eq(@course.account.ally_base_url)
-    end
-  end
-
   describe 'GET sign' do
 
     it 'should check whether Ally is enabled for the account' do
