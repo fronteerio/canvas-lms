@@ -781,7 +781,14 @@ module ApplicationHelper
     ally_settings = Context.get_account(@context).ally_settings
     if ally_settings.present?
       ally_js_url = ally_settings[2] + "/integration/ally.js"
-      include_js_with_jquery([ally_js_url])
+      str = <<-ENDSCRIPT
+      ALLY_CFG = {
+        'baseUrl': '#{ally_settings[1]}',
+        'clientId': '#{ally_settings[0]}',
+        'enabled': true
+      }
+      ENDSCRIPT
+      javascript_tag(str) + include_js_with_jquery([ally_js_url])
     end
   end
 
