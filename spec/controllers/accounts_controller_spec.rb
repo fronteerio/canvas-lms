@@ -503,6 +503,31 @@ describe AccountsController do
         expect(response).not_to be_success
       end
     end
+
+    context "ally" do
+      before(:once) { account_with_admin }
+      before(:each) { user_session(@admin) }
+
+      it "should allow setting ally values" do
+        post 'update', :id => @account.id, :account => {
+          ally_client_id: '123456',
+          ally_secret: 'secret',
+          ally_base_url: 'http://ally.local'
+        }
+
+        @account.reload
+        expect(@account.ally_client_id).to eq('123456')
+        expect(@account.ally_secret).to eq('secret')
+        expect(@account.ally_base_url).to eq('http://ally.local')
+      end
+
+      it "should error on an invalid host" do
+        post 'update', :id => @account.id, :account => {
+          :ally_base_url => 'invalid url'
+        }
+        expect(response).not_to be_success
+      end
+    end
   end
 
   describe "#settings" do
