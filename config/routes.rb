@@ -1758,6 +1758,9 @@ CanvasRails::Application.routes.draw do
     get '/crocodoc_session', controller: 'crocodoc_sessions', action: 'show', as: :crocodoc_session
     get '/canvadoc_session', controller: 'canvadoc_sessions', action: 'show', as: :canvadoc_session
 
+    get '/courses/:course_id/ally/sign', controller: 'ally', action: :sign
+    get '/courses/:course_id/ally/proxy', controller: 'ally', action: :proxy
+
     scope(controller: :grading_periods) do
       %w(course account).each do |context|
         content_prefix = "#{context.pluralize}/:#{context}_id"
