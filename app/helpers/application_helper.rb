@@ -778,8 +778,9 @@ module ApplicationHelper
   end
 
   def include_ally_js
-    ally_settings = Context.get_account(@context).ally_settings
-    if ally_settings.present?
+    account = Context.get_account(@context)
+    if account.present? && account.ally_settings.present?
+      ally_settings = account.ally_settings
       ally_js_url = ally_settings[2] + "/integration/canvas/ally.js"
       str = <<-ENDSCRIPT
       ALLY_CFG = {
